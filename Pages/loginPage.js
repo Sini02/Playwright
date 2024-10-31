@@ -46,6 +46,7 @@ export class loginPage extends BasePage{
         this.btnDeleteAcc = page.locator('//*[@class="nav navbar-nav"]//li[5]//a')
         this.deleteAccTxt = page.locator('//*[@class="title text-center"]//b')
         this.btnContinueDeletedAcc = page.locator('//*[@class= "btn btn-primary"]')
+        this.btnLogout = page.locator('//*[@class="fa fa-lock"]//..')
     }
 
     async loginUser(username, password){
@@ -62,5 +63,70 @@ export class loginPage extends BasePage{
 
         await this.btnContinueDeletedAcc.click()
 
+    }
+    async navigateToLogin(){
+        await this.openApp()
+
+        await this.btnSignupLogin.click()
+
+        await this.newUserSignupTxt.isVisible()
+    }
+    async registerUserFirstScreen(name, gmail){
+        await this.inputSignupName.fill(name)
+
+        await this.inputSignupEmail.fill(gmail)
+
+        await this.btnSignupCommit.click()
+
+    }
+    async registerUserSecondScreen(gender, name, password, day, month, year, firstName, lastName, company, address1, 
+        address2, country, state, city, zipCode, mobileNumber){
+
+            if(gender == "Mr."){
+                await this.btnTitleMr.click()
+            }else await this.btnTitleMrs.click()
+
+            await this.newFirstName.fill(name)
+
+            await this.labelNewPassword.fill(password)
+
+            parseInt(day);
+            await this.dropMenuNewYear.click()
+            await this.dropMenuNewYear.click(day)
+
+            parseInt(month)
+            await this.dropMenuNewYear.click()
+            await this.dropMenuNewYear.click(month)
+
+            parseInt(year)
+            await this.dropMenuNewYear.click()
+            await this.dropMenuNewYear.click(year)
+
+            await this.checkBoxNewSletter.click()
+
+            await this.checkBoxSpecialOffers.click()
+
+            await this.newFirstName.fill(firstName)
+
+            await this.newLastName.fill(lastName)
+
+            await this.newCompany.fill(company)
+
+            await this.newAddress1.fill(address1)
+
+            await this.newAddress2.fill(address2)
+
+            await this.newCountry.click()
+            await this.newCountry.click(country)
+
+            await this.newState.fill(state)
+
+            await this.newCity.fill(city)
+
+            await this.newZipCode.fill(zipCode)
+
+            await this.newMobileNumber.fill(mobileNumber)
+
+            await this.btnCreateAcc.click()
     }
 }

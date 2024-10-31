@@ -10,7 +10,7 @@ export class BasePage{
         return this.page.goto(this.APP_URL)
     }
 
-    getApplicationUrl(){
+    async getApplicationUrl(){
         return this.APP_URL
     }
 
