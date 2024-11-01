@@ -12,11 +12,12 @@ test.describe("Test Login Purchase Logout flow", () => {
         const browser = await chromium.launch({ headless: false });
         const page = await browser.newPage();
 
-
+        //login user account
         const loginTest = new LoginPage(page);
         await loginTest.loginUser("standard_user");
         await expect(page).toHaveURL(loginTest.homePageURL)
 
+        //adding random product to cart
         const addProductToCart = new HomePage(page)
         let id = Math.floor(Math.random() * 6); 
         await addProductToCart.addProductToCart(id)
@@ -26,7 +27,7 @@ test.describe("Test Login Purchase Logout flow", () => {
         await addProductToCart.homePageCartIconValue.isVisible()
         await addProductToCart.homePageBtnCartIcon.click()
 
-
+        //checking added product value by escaping
         expect((await validateProductsInCart.getCartItems()).toString()).toBe(await addProductToCart.homePageCartIconValue.textContent())
         expect(page).toHaveURL(validateProductsInCart.cartPageURL)
         let cartPageProductName = validateProductsInCart.escapeString(validateProductsInCart.cartPageTextProduct.textContent().toString())
@@ -34,14 +35,14 @@ test.describe("Test Login Purchase Logout flow", () => {
         expect(cartPageProductName.toString()).toMatch(homePageProductName.toString())
         await validateProductsInCart.cartPageBtnCheckout.click()
 
-
+        //Entering value for checkout
         await page.getByText('Checkout: Your Information').isVisible()
         const checkOutTest = new CheckOutPage(page)
         expect(page).toHaveURL(checkOutTest.checkoutFirstPageURL)
         await checkOutTest.checkoutPageInfos("usersFirstName", "usersLastName", "123")
         await page.getByText('CONTINUE').click()
 
-
+        //Order confirmation
         expect(page).toHaveURL(checkOutTest.checkoutSecondPageURL)
         await page.getByText('Checkout: Overview').isVisible()
         await page.getByText('FINISH').click()
@@ -50,7 +51,7 @@ test.describe("Test Login Purchase Logout flow", () => {
         await page.getByText('THANK YOU FOR YOUR ORDER').isVisible()
         expect(page).toHaveURL(checkOutTest.checkoutThirdPageURL)
 
-
+        //logout user account
         await page.getByText('Open Menu').click()
         await checkOutTest.checkoutPageBtnLogout.click()
         await loginTest.loginPageBtnLogin.isVisible()
